@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote of the day</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="quote-box">
+        <h2>Quote of the day</h2>
+        <blockquote id="quote"></blockquote>
+        <span id="author"></span>
+
+        <div>
+            <button onclick="getQuote()">New Quote</button>
+            <button onclick="share()"><img src="X.png">Share</button>
+        </div>
+
+    </div>
+
+    <script>
+        const quote = document.getElementById("quote");
+        const author = document.getElementById("author");
+        const api_url = "https://api.quotable.io/quotes/random";
+
+
+        async function getQuote(url){
+            try {
+                const response = await fetch(url);
+                var data = await response.json();
+                quote.innerHTML = data.content;
+                author.innerHTML = data.author;
+            } catch (error) {
+                quote.innerHTML = "Sorry, an error occurred while fetching the quote.";
+                author.innerHTML = "";
+            }
+        }
+
+        getQuote(api_url);
+
+        function share(){
+            const textToShare = `${quote.innerHTML} ${author.innerHTML}`;
+            const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}`;
+            window.open(tweetUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
